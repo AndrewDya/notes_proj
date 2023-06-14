@@ -1,6 +1,6 @@
 import datetime
 import json
-
+import os
 
 NOTES_FILE = "notes.json"
 
@@ -29,6 +29,43 @@ def edit_note():
             print("Заметка успешно отредактирована.")
             return
     print("Заметка с указанным ID не найдена.")
+
+
+def delete_note():
+    note_id = int(input("Введите ID заметки для удаления: "))
+    for note in notes:
+        if note["id"] == note_id:
+            notes.remove(note)
+            save_notes()
+            print("Заметка успешно удалена.")
+            return
+    print("Заметка с указанным ID не найдена.")
+
+
+def list_notes():
+    filter_date = input("Введите дату для фильтрации (гггг-мм-дд): ")
+    filtered_notes = [note for note in notes if note["timestamp"].startswith(filter_date)]
+    if filtered_notes:
+        for note in filtered_notes:
+            print(f"ID: {note['id']}")
+            print(f"Заголовок: {note['title']}")
+            print(f"Текст: {note['message']}")
+            print(f"Дата/Время: {note['timestamp']}")
+            print("-" * 30)
+    else:
+        print("Заметки с указанной датой не найдены.")
+
+
+def save_notes():
+    with open(NOTES_FILE, "w") as file:
+        json.dump(notes, file, indent=4)
+
+
+def load_notes():
+    if os.path.exists(NOTES_FILE):
+        with open(NOTES_FILE, "r") as file:
+            return json.load(file)
+    return []
 
 
 def main():
