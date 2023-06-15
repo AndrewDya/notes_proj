@@ -9,42 +9,53 @@ def add_note():
     title = input("Введите заголовок заметки: ")
     message = input("Введите текст заметки: ")
     timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-    note = {"id": len(notes) + 1, "title": title, "message": message, "timestamp": timestamp}
+    note = {"id": len(notes) + 1, "title": title, "message": message,
+            "timestamp": timestamp}
     notes.append(note)
     save_notes()
     print("Заметка успешно сохранена.")
 
 
 def edit_note():
-    note_id = int(input("Введите ID заметки для редактирования: "))
-    for note in notes:
-        if note["id"] == note_id:
-            title = input("Введите новый заголовок заметки: ")
-            message = input("Введите новый текст заметки: ")
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            note["title"] = title
-            note["message"] = message
-            note["timestamp"] = timestamp
-            save_notes()
-            print("Заметка успешно отредактирована.")
-            return
-    print("Заметка с указанным ID не найдена.")
+    try:
+        note_id = int(input("Введите ID заметки для редактирования: "))
+        for note in notes:
+            if note["id"] == note_id:
+                title = input("Введите новый заголовок заметки: ")
+                message = input("Введите новый текст заметки: ")
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                note["title"] = title
+                note["message"] = message
+                note["timestamp"] = timestamp
+                save_notes()
+                print("Заметка успешно отредактирована.")
+                return
+        print("Заметка с указанным ID не найдена.")
+    except ValueError:
+        print("Ошибка: Введен некорректный ID заметки. "
+              "Пожалуйста, введите целочисленное значение ID.")
+
 
 
 def delete_note():
-    note_id = int(input("Введите ID заметки для удаления: "))
-    for note in notes:
-        if note["id"] == note_id:
-            notes.remove(note)
-            save_notes()
-            print("Заметка успешно удалена.")
-            return
-    print("Заметка с указанным ID не найдена.")
+    try:
+        note_id = int(input("Введите ID заметки для удаления: "))
+        for note in notes:
+            if note["id"] == note_id:
+                notes.remove(note)
+                save_notes()
+                print("Заметка успешно удалена.")
+                return
+        print("Заметка с указанным ID не найдена.")
+    except ValueError:
+        print("Ошибка: Введен некорректный ID заметки. "
+              "Пожалуйста, введите целочисленное значение ID.")
 
 
 def list_notes():
     filter_date = input("Введите дату для фильтрации (гггг-мм-дд): ")
-    filtered_notes = [note for note in notes if note["timestamp"].startswith(filter_date)]
+    filtered_notes = [note for note in notes if note["timestamp"]
+                      .startswith(filter_date)]
     if filtered_notes:
         for note in filtered_notes:
             print(f"ID: {note['id']}")
