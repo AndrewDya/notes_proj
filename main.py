@@ -17,30 +17,39 @@ def add_note():
 
 
 def edit_note():
-    note_id = int(input("Введите ID заметки для редактирования: "))
-    for note in notes:
-        if note["id"] == note_id:
-            title = input("Введите новый заголовок заметки: ")
-            message = input("Введите новый текст заметки: ")
-            timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
-            note["title"] = title
-            note["message"] = message
-            note["timestamp"] = timestamp
-            save_notes()
-            print("Заметка успешно отредактирована.")
-            return
-    print("Заметка с указанным ID не найдена.")
+    try:
+        note_id = int(input("Введите ID заметки для редактирования: "))
+        for note in notes:
+            if note["id"] == note_id:
+                title = input("Введите новый заголовок заметки: ")
+                message = input("Введите новый текст заметки: ")
+                timestamp = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+                note["title"] = title
+                note["message"] = message
+                note["timestamp"] = timestamp
+                save_notes()
+                print("Заметка успешно отредактирована.")
+                return
+        print("Заметка с указанным ID не найдена.")
+    except ValueError:
+        print("Ошибка: Введен некорректный ID заметки. "
+              "Пожалуйста, введите целочисленное значение ID.")
+
 
 
 def delete_note():
-    note_id = int(input("Введите ID заметки для удаления: "))
-    for note in notes:
-        if note["id"] == note_id:
-            notes.remove(note)
-            save_notes()
-            print("Заметка успешно удалена.")
-            return
-    print("Заметка с указанным ID не найдена.")
+    try:
+        note_id = int(input("Введите ID заметки для удаления: "))
+        for note in notes:
+            if note["id"] == note_id:
+                notes.remove(note)
+                save_notes()
+                print("Заметка успешно удалена.")
+                return
+        print("Заметка с указанным ID не найдена.")
+    except ValueError:
+        print("Ошибка: Введен некорректный ID заметки. "
+              "Пожалуйста, введите целочисленное значение ID.")
 
 
 def list_notes():
